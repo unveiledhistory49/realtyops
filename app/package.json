@@ -17,6 +17,7 @@
     "zod": "^3"
   },
   "devDependencies": {
+    "@babel/plugin-syntax-import-meta": "^7.10.4",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
