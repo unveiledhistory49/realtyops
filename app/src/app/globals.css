@@ -1,0 +1,138 @@
+@import "tailwindcss";
+
+/* ── RealtyOps Design Tokens ── */
+@theme inline {
+  --color-ink: #1C2333;
+  --color-paper: #F4F3EE;
+  --color-manila: #D8C79A;
+  --color-stamp-red: #A6392C;
+  --color-ledger-green: #3B6B4C;
+  --color-hairline: #C9C6BC;
+
+  --color-background: var(--color-paper);
+  --color-foreground: var(--color-ink);
+
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+}
+
+/* ── Base ── */
+html {
+  height: 100%;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-plex-sans), "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Focus Rings — Ink, 2px, offset. Never default browser blue. ── */
+*:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+/* ── Monospace utility ── */
+.font-tabular {
+  font-family: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.font-stamp {
+  font-family: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* ── Stamp scale-in animation ── */
+@keyframes stamp-in {
+  from {
+    transform: scale(0.9) rotate(var(--stamp-rotate, 0deg));
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(1) rotate(var(--stamp-rotate, 0deg));
+    opacity: 1;
+  }
+}
+
+.stamp-animate {
+  animation: stamp-in 80ms ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp-animate {
+    animation: none;
+  }
+}
+
+/* ── Row optimistic flash ── */
+@keyframes row-flash {
+  0% { background-color: transparent; }
+  30% { background-color: color-mix(in srgb, var(--color-manila) 25%, transparent); }
+  100% { background-color: transparent; }
+}
+
+[data-optimistic="true"] {
+  animation: row-flash 120ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-optimistic="true"] {
+    animation: none;
+    background-color: color-mix(in srgb, var(--color-manila) 15%, transparent);
+  }
+}
+
+/* ── Drawer ── */
+@keyframes drawer-slide-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes drawer-slide-out {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+.drawer-enter {
+  animation: drawer-slide-in 200ms ease-out forwards;
+}
+
+.drawer-exit {
+  animation: drawer-slide-out 200ms ease-in forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer-enter,
+  .drawer-exit {
+    animation: none;
+  }
+}
+
+/* ── Scrollbar styling (subtle, ledger-appropriate) ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-hairline);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink);
+}
